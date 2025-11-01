@@ -1,6 +1,6 @@
 <?php
 // 1. Bring in the configuration "secrets"
-require_once 'config.php';
+require_once __DIR__ . '/config.php';
 
 /*
  * -----------------------------------------------------------------

@@ -1,20 +1,61 @@
 <?php
-    // Set a variable for the page title, which header.php will use
-    $pageTitle = 'Home - My Local Business';
-
-    // 1. Include the page header
-    // We use __DIR__ to get the absolute path to the current file's directory
-    // Then '..' to go "up" one level out of 'public' and into 'src'
-    include_once __DIR__ . '/../src/templates/header.php';
+require_once __DIR__ . '/../src/ecommerce.php';
+$products = getProducts($pdo, ['q' => '']);
 ?>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Local Business - Home</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand"><a href="/index.php" style="color:white;text-decoration:none">Local Business</a></div>
+      <div class="nav">
+        <a href="/shop.php">Shop</a>
+        <a href="/contact.php">Contact</a>
+        <form id="searchForm" class="search" action="/shop.php" method="get">
+          <input type="text" name="q" placeholder="Search products...">
+        </form>
+        <div class="topbar-actions">
+          <?php if(isLoggedIn()): ?>
+            <a href="/cart.php">Cart <span class="badge"><?php echo array_sum($_SESSION['cart'] ?? []); ?></span></a>
+            <a href="/logout.php">Logout</a>
+          <?php else: ?>
+            <a href="/cart.php">Cart <span class="badge"><?php echo array_sum($_SESSION['cart'] ?? []); ?></span></a>
+            <a href="/login.php" class="btn-link">Login</a>
+            <a href="/register.php" class="btn-link">Register</a>
+          <?php endif; ?>
+        </div>
+      </div>
+    </div>
+  </header>
 
-<!-- This is the main content for the homepage -->
-<h1 class="page-title">Welcome to Our Business!</h1>
-<p>We are a local business dedicated to providing the best services in town. Browse our site to learn more about what we do.</p>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque leo nec massa vehicula, A-enean vulputate ac massa A-convallis. Phasellus A-sapien eget nisi egestas A-aliquet.</p>
+  <div class="container">
+    <div class="banner">
+      <h2>Welcome to our store</h2>
+      <p>Special offers on local products. Free pickup in town.</p>
+    </div>
 
+    <h3>Featured products</h3>
+    <div class="grid">
+      <?php foreach(array_slice($products,0,6) as $p): ?>
+        <div class="card">
+          <img src="/images/<?php echo sanitize($p['image'] ?? 'placeholder.svg'); ?>" alt="<?php echo sanitize($p['name']); ?>">
+          <h3><?php echo sanitize($p['name']); ?></h3>
+          <div class="product-meta"><?php echo sanitize($p['category']); ?></div>
+          <div class="price">$<?php echo number_format($p['price'],2); ?></div>
+          <div style="margin-top:auto"><a class="btn" href="/product.php?id=<?php echo $p['id']; ?>">View</a></div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
 
-<?php
-    // 2. Include the page footer
-    include_once __DIR__ . '/../src/templates/footer.php';
-?>
+  <div class="footer">
+    <div class="container">&copy; <?php echo date('Y'); ?> Local Business</div>
+  </div>
+</body>
+</html>
