@@ -34,6 +34,10 @@ $total = cartTotal($pdo);
       <div class="nav">
         <a href="/shop.php">Shop</a>
         <a href="/cart.php">Cart</a>
+        <?php if(isLoggedIn()): ?>
+          <a href="/profile.php">Profile</a>
+        <?php endif; ?>
+        <a href="/contact.php">Contact</a>
         <div class="topbar-actions">
           <?php if(isLoggedIn()): ?>
             <a href="/logout.php">Logout</a>

@@ -23,16 +23,18 @@ $products = getProducts($pdo, $filters);
       <div class="brand"><a href="/index.php" style="color:white;text-decoration:none">Local Business</a></div>
       <div class="nav">
         <a href="/shop.php">Shop</a>
+        <a href="/cart.php">Cart <span class="badge"><?php echo array_sum($_SESSION['cart'] ?? []); ?></span></a>
+        <?php if(isLoggedIn()): ?>
+          <a href="/profile.php">Profile</a>
+        <?php endif; ?>
         <a href="/contact.php">Contact</a>
         <form id="searchForm" class="search" action="/shop.php" method="get">
           <input type="text" name="q" placeholder="Search products..." value="<?php echo $filters['q'] ?? ''; ?>">
         </form>
         <div class="topbar-actions">
           <?php if(isLoggedIn()): ?>
-            <a href="/cart.php">Cart <span class="badge"><?php echo array_sum($_SESSION['cart'] ?? []); ?></span></a>
             <a href="/logout.php">Logout</a>
           <?php else: ?>
-            <a href="/cart.php">Cart <span class="badge"><?php echo array_sum($_SESSION['cart'] ?? []); ?></span></a>
             <a href="/login.php" class="btn-link">Login</a>
             <a href="/register.php" class="btn-link">Register</a>
           <?php endif; ?>

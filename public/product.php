@@ -27,6 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['add_to_cart'])) {
       <div class="nav">
         <a href="/shop.php">Shop</a>
         <a href="/cart.php">Cart (<?php echo array_sum($_SESSION['cart'] ?? []); ?>)</a>
+        <?php if(isLoggedIn()): ?>
+          <a href="/profile.php">Profile</a>
+        <?php endif; ?>
+        <a href="/contact.php">Contact</a>
         <div class="topbar-actions">
           <?php if(isLoggedIn()): ?>
             <a href="/logout.php">Logout</a>

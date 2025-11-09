@@ -3,7 +3,7 @@ require_once __DIR__ . '/../src/ecommerce.php';
 
 $items = cartItems($pdo);
 if (empty($items)) {
-  header('Location: /public/cart.php'); exit;
+  header('Location: /cart.php'); exit;
 }
 
 $total = cartTotal($pdo);
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   unset($_SESSION['cart']);
 
   // show confirmation
-  header('Location: /public/checkout.php?success=1&order=' . $orderId);
+  header('Location: /checkout.php?success=1&order=' . $orderId);
   exit;
 }
 
@@ -53,6 +53,11 @@ $orderId = $_GET['order'] ?? null;
       <div class="brand"><a href="/index.php" style="color:white;text-decoration:none">Local Business</a></div>
       <div class="nav">
         <a href="/shop.php">Shop</a>
+        <a href="/cart.php">Cart</a>
+        <?php if(isLoggedIn()): ?>
+          <a href="/profile.php">Profile</a>
+        <?php endif; ?>
+        <a href="/contact.php">Contact</a>
       </div>
     </div>
   </header>
